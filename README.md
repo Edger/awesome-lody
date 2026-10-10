@@ -20,6 +20,7 @@ Community projects built around Lody.
 | --- | --- | --- |
 | [lody-ios](https://github.com/Innei/lody-ios) | Client | Independent iOS client for Lody — native chat, sessions, and coding-agent collaboration on iPhone. |
 | [kurage](https://github.com/natsustan/kurage) | Client | iOS Native Client for Lody. |
+| [acp-extension-core](https://github.com/LodyAI/acp-extension-core) | Protocol | ACP protocol extensions for Lody. |
 
 ## Browse by scenario
 
