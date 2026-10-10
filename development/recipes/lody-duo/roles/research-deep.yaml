@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: role
+name: Research Deep
+description: Read-only root-cause investigation, architectural comparison, and proposal
+  refutation; verifies delegated evidence.
+promptFile: ../prompts/research-deep.md
+recommended:
+  agent: codex
+  runConfig:
+    modeId: agent-full-access
+    modelId: gpt-6.1-sol
+    configOptionValues:
+      fast-mode: true
+      plan_mode: false
+      reasoning_effort: high

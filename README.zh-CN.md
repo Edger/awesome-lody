@@ -28,7 +28,9 @@
 
 `development/`
 
-暂无投稿。欢迎 Roles、Schedules、Prompts、Skills、教程、视频或组合实践。
+#### Recipes
+
+- [Lody Duo workflow](development/recipes/lody-duo/README.md) — Eight role presets and an external Skill for coordinated development and independent review. Language: English (`en`).
 
 ### 代码审查
 

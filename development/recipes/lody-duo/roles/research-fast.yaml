@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: role
+name: Research Fast
+description: Read-only defined searches, source checks, and narrow code location;
+  returns complex causal analysis to the lead.
+promptFile: ../prompts/research-fast.md
+recommended:
+  agent: codex
+  runConfig:
+    modeId: agent-full-access
+    modelId: gpt-6-luna
+    configOptionValues:
+      fast-mode: true
+      plan_mode: false
+      reasoning_effort: high

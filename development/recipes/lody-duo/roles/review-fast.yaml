@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: role
+name: Review Fast
+description: Independent read-only review of routine, low-risk targets; returns high-consequence
+  targets to the host.
+promptFile: ../prompts/review-fast.md
+recommended:
+  agent: codex
+  runConfig:
+    modeId: agent-full-access
+    modelId: gpt-6.1-sol
+    configOptionValues:
+      fast-mode: true
+      plan_mode: false
+      reasoning_effort: medium

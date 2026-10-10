@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: role
+name: Build Fast
+description: Bounded implementation with a settled goal and acceptance; returns complex
+  or high-consequence boundaries to the lead.
+promptFile: ../prompts/build-fast.md
+recommended:
+  agent: codex
+  runConfig:
+    modeId: agent-full-access
+    modelId: gpt-6-luna
+    configOptionValues:
+      fast-mode: true
+      plan_mode: false
+      reasoning_effort: high

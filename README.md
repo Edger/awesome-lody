@@ -28,7 +28,9 @@ Community projects built around Lody.
 
 `development/`
 
-No submissions yet. Roles, schedules, prompts, Skills, guides, videos, and recipes are welcome.
+#### Recipes
+
+- [Lody Duo workflow](development/recipes/lody-duo/README.md) — Eight role presets and an external Skill for coordinated development and independent review. Language: English (`en`).
 
 ### Code review
 
