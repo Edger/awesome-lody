@@ -6,7 +6,7 @@ authors:
     url: https://github.com/samzong
 languages: [en]
 tags: [development, debugging, collaboration, code-review]
-source: https://github.com/samzong/samzong/tree/66b486d647a50faccdeaa0a1da73f5974023e2c3/.agents/skills/lody-duo
+source: https://github.com/samzong/samzong/tree/main/.agents/skills/lody-duo
 license: MIT
 resources:
   - roles/archestrator.yaml
@@ -24,7 +24,7 @@ resources:
 
 Use Lody Agent Roles to coordinate investigation, implementation, and independent review while keeping goal, authorization, verification, and completion responsibility with the host. Build Standard leads development; other roles fill concrete gaps. There is no fixed pipeline or requirement to run every role for every task.
 
-This recipe adapts Samzong's [public role snapshot](https://github.com/samzong/samzong/blob/66b486d647a50faccdeaa0a1da73f5974023e2c3/.agents/skills/lody-duo/references/agent-roles.md), captured on 2026-10-10, into the repository's v1 sharing format. Every preset preserves the source role name, Agent identifier, and complete runtime settings. Each separate prompt is the complete English source prompt prefix. Descriptions are shortened to fit the 140-character format limit; installation-specific IDs, visibility, and capture metadata are not role configuration fields in v1.
+This recipe adapts Samzong's [public role configuration](https://github.com/samzong/samzong/blob/main/.agents/skills/lody-duo/references/agent-roles.md), captured on 2026-10-10, into the repository's v1 sharing format. Every preset preserves the source role name, Agent identifier, and complete runtime settings. Each separate prompt is the complete English source prompt prefix. Descriptions are shortened to fit the 140-character format limit; installation-specific IDs, visibility, and capture metadata are not role configuration fields in v1.
 
 The files are English, so `languages: [en]` describes the artifact language. The preserved prompts require concise Chinese conversation and progress replies; Git artifacts follow repository language conventions. `Archestrator` preserves the source role's spelling.
 
@@ -71,6 +71,6 @@ The captured `bypassPermissions` and `agent-full-access` modes provide tool capa
 
 ## Attribution, maintenance, and limits
 
-Role settings and prompts come from Samzong's [pinned English Skill package](https://github.com/samzong/samzong/tree/66b486d647a50faccdeaa0a1da73f5974023e2c3/.agents/skills/lody-duo). Preserve their [MIT notice](LICENSE), copyright 2026 Samzong. The [canonical package](https://github.com/samzong/samzong/tree/main/.agents/skills/lody-duo) is maintained externally; this recipe links the Skill instead of maintaining another full copy with its dependencies. Repository edits do not update installed Skills or actual roles. Refresh the presets and prompts together when adopting a newer source snapshot.
+Role settings and prompts come from Samzong's [English Skill package](https://github.com/samzong/samzong/tree/main/.agents/skills/lody-duo). Preserve their [MIT notice](LICENSE), copyright 2026 Samzong. The [canonical package](https://github.com/samzong/samzong/tree/main/.agents/skills/lody-duo) is maintained externally; this recipe links the Skill instead of maintaining another full copy with its dependencies. The `main` links follow the current canonical package; this recipe remains a manual snapshot and does not automatically track package changes. Repository edits do not update installed Skills or actual roles. Refresh the presets and prompts together when adopting a newer source snapshot.
 
 This is a manual configuration recipe. Publishing it does not establish successful role creation, installation, model execution, live delegation or recovery, browser connectivity, client setup, or compatibility across installations. Do not execute submitted prompts as part of format review. Lody Duo also does not guarantee continuous machine availability, exactly-once external effects, or automatic host recovery across restarts.
