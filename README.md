@@ -12,6 +12,15 @@ Browse by scenario, then content type. Individual resources and complete recipes
 
 Copyable submission templates are ready; community categories await their first contributions. Use configurations following their instructions.
 
+## Ecosystem
+
+Community projects built around Lody.
+
+| Name | Type | Description |
+| --- | --- | --- |
+| [lody-ios](https://github.com/Innei/lody-ios) | Client | Independent iOS client for Lody — native chat, sessions, and coding-agent collaboration on iPhone. |
+| [kurage](https://github.com/natsustan/kurage) | Client | iOS Native Client for Lody. |
+
 ## Browse by scenario
 
 ### Development and debugging

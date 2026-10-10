@@ -12,6 +12,15 @@
 
 当前提供可复制的投稿模板；社区目录等待首批贡献。配置按使用说明设置。
 
+## 周边生态
+
+围绕 Lody 构建的社区项目。
+
+| 名称 | 类型 | 描述 |
+| --- | --- | --- |
+| [lody-ios](https://github.com/Innei/lody-ios) | 客户端 | 独立的 Lody iOS 客户端，在 iPhone 上提供原生聊天、会话管理和编程 Agent 协作。 |
+| [kurage](https://github.com/natsustan/kurage) | 客户端 | Lody 的 iOS 原生客户端。 |
+
 ## 按场景浏览
 
 ### 开发与调试

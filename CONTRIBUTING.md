@@ -6,6 +6,8 @@ All Lody-related configurations, practices, guides, and videos are welcome. Foll
 
 ## Choose a location
 
+To recommend an ecosystem project, add a row to the Ecosystem table in both homepages with its name, repository link, type, and a short description.
+
 Use `<scenario>/<type>/<entry>`. See the [homepage](README.md) for scenarios.
 
 | Type | Submission |
