@@ -1,0 +1,9 @@
+schemaVersion: 1
+kind: role
+name: Project reviewer
+promptFile: prompt.md
+recommended:
+  agent: codex
+  runConfig:
+    configOptionValues:
+      reasoning_effort: high

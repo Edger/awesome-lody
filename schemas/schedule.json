@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/LodyAI/awesome-lody/schemas/schedule.json",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "kind": {
+      "const": "schedule"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S",
+      "maxLength": 200
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S",
+      "maxLength": 1000
+    },
+    "promptFile": {
+      "$ref": "common.json#/definitions/path"
+    },
+    "recommended": {
+      "$ref": "common.json#/definitions/recommended"
+    },
+    "roleFile": {
+      "$ref": "common.json#/definitions/path"
+    },
+    "trigger": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "cron"
+            },
+            "expression": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "timeZone": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "kind",
+            "expression"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "interval"
+            },
+            "everyMs": {
+              "type": "integer",
+              "minimum": 60000
+            }
+          },
+          "required": [
+            "kind",
+            "everyMs"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "name",
+    "promptFile",
+    "trigger"
+  ],
+  "not": {
+    "required": [
+      "roleFile",
+      "recommended"
+    ],
+    "properties": {
+      "roleFile": {},
+      "recommended": {}
+    }
+  }
+}

@@ -1,0 +1,8 @@
+schemaVersion: 1
+kind: schedule
+name: Daily project check
+promptFile: ../prompts/check.md
+trigger:
+  kind: cron
+  expression: "0 9 * * 1-5"
+roleFile: ../roles/reviewer.yaml

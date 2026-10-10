@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/LodyAI/awesome-lody/schemas/common.json",
+  "definitions": {
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!/)(?![A-Za-z][A-Za-z0-9+.-]*:)(?!.*\\\\).+$"
+    },
+    "recommended": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "agent": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "runConfig": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "modelId": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "modeId": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "configOptionValues": {
+              "type": "object",
+              "additionalProperties": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "boolean"
+                  }
+                ]
+              }
+            }
+          },
+          "required": []
+        }
+      },
+      "required": [
+        "agent"
+      ]
+    }
+  }
+}

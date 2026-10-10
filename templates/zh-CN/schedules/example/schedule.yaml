@@ -1,0 +1,7 @@
+schemaVersion: 1
+kind: schedule
+name: 每日项目巡检
+promptFile: prompt.md
+trigger:
+  kind: cron
+  expression: "0 9 * * 1-5"

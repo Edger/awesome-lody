@@ -1,0 +1,9 @@
+schemaVersion: 1
+kind: role
+name: 项目审查员
+promptFile: prompt.md
+recommended:
+  agent: codex
+  runConfig:
+    configOptionValues:
+      reasoning_effort: high

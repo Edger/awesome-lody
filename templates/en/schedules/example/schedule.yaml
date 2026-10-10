@@ -1,0 +1,7 @@
+schemaVersion: 1
+kind: schedule
+name: Daily project check
+promptFile: prompt.md
+trigger:
+  kind: cron
+  expression: "0 9 * * 1-5"
