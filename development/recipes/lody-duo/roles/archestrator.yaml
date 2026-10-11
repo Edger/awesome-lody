@@ -1,0 +1,13 @@
+schemaVersion: 1
+kind: role
+name: Archestrator
+description: Primary coordinator for goals, authorization, partner selection, independent
+  review, and final acceptance.
+promptFile: ../prompts/archestrator.md
+recommended:
+  agent: claude
+  runConfig:
+    modeId: bypassPermissions
+    modelId: claude-fable-5-1
+    configOptionValues:
+      effort: medium

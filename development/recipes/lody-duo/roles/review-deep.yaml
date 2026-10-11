@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: role
+name: Review Deep
+description: Independent read-only review of complex and high-consequence targets
+  under the full liability-review contract.
+promptFile: ../prompts/review-deep.md
+recommended:
+  agent: codex
+  runConfig:
+    modeId: agent-full-access
+    modelId: gpt-6.1-sol
+    configOptionValues:
+      fast-mode: true
+      plan_mode: false
+      reasoning_effort: high

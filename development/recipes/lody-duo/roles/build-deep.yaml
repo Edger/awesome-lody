@@ -1,0 +1,14 @@
+schemaVersion: 1
+kind: role
+name: Build Deep
+description: Read-only design consultation; bounded implementation only when explicitly
+  assigned by the host or Build Standard.
+promptFile: ../prompts/build-deep.md
+recommended:
+  agent: claude
+  runConfig:
+    modeId: bypassPermissions
+    modelId: opus
+    configOptionValues:
+      effort: medium
+      fast: false

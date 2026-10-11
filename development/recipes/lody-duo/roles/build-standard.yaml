@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: role
+name: Build Standard
+description: Development lead for investigation, primary implementation, integration,
+  verification, and authorized delivery.
+promptFile: ../prompts/build-standard.md
+recommended:
+  agent: codex
+  runConfig:
+    modeId: agent-full-access
+    modelId: gpt-6.1-sol
+    configOptionValues:
+      fast-mode: true
+      plan_mode: false
+      reasoning_effort: high
