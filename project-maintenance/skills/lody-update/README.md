@@ -20,7 +20,7 @@ tags: [lody, daemon, update, maintenance, macos]
 ## 前提
 
 - 目标机器已安装 Lody，并可通过本地 shell 或 Lody MCP 访问。
-- 升级独立 daemon 需要可用的 Node/npm 环境和全局安装权限。
+- 升级独立 daemon 需要可用的 Node/npm 环境和全局安装权限；脚本会在停机前核对目标包的 `engines.node`，不满足时保留旧服务。
 - 自动化重启脚本目前仅支持 macOS，需要 Python 3；其他系统按 [SKILL.md](SKILL.md) 的手动步骤执行。
 - 执行前确认目标机器、目标版本和当前服务归属。远程机器在线不等于具备远程 shell 或升级接口。
 
@@ -34,6 +34,8 @@ tags: [lody, daemon, update, maintenance, macos]
 ## 安全边界
 
 - 不把历史会话的 PID、机器 ID 或运行时状态写进脚本；执行时重新核实。
+- 重启脚本在停机前检查旧服务归属、Node engine 和目标 CLI 能否通过 `workspace list --json` 读取原工作区；只对明确的临时 HTTP 408/429/5xx 做有限重试，401/403 或归属不明时停止。
+- 后台任务会原子写入 `progress.json` 和 `result.json`；恢复连接后读取原任务，不重复提交同一操作。
 - 退出桌面端超时后记录阻塞，不自动强杀、清空数据目录或删除凭据。
 - 没有最终验证证据时，报告“已提交，尚未确认成功”，不把 npm 安装成功或按钮点击当作完成。
 - 默认重启脚本只处理已存在的独立 daemon；不会安装 npm 包，也不会把内置 Host 当作独立 daemon 重启。
@@ -41,6 +43,6 @@ tags: [lody, daemon, update, maintenance, macos]
 ## 文件
 
 - [SKILL.md](SKILL.md)：完整 Skill 指令。
-- [scripts/restart_daemon.py](scripts/restart_daemon.py)：macOS 独立 daemon 重启与验证脚本，支持 `--check-only` 和 `--detach`。
+- [scripts/restart_daemon.py](scripts/restart_daemon.py)：macOS 独立 daemon 重启与验证脚本，支持 `--check-only` 和 `--detach`，并写入 `progress.json` / `result.json`。
 - [scripts/test_restart_daemon.py](scripts/test_restart_daemon.py)：使用 mock 隔离进程和服务操作的回归测试。
 - [agents/openai.yaml](agents/openai.yaml)：Agent 界面显示名称与简介。

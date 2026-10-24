@@ -58,11 +58,12 @@ daemon 高于桌面端时明确报告版本差异。版本不一致本身不等�
 
 先确认用户要求的版本；未指定时查询 npm 当前 `latest`，不要把历史版本或 `next` 当成最新稳定版。使用同一用户、Node/npm 环境安装，并保留原有启动参数和配置。
 
-1. 查询 `npm view lody dist-tags --json`，解析目标稳定版本；用 `npm install -g lody@<目标版本>` 安装。安装成功且 `lody --version` 达到目标后，才进入重启。
-2. 通过 `npm prefix -g` 获取稳定 launcher，macOS 通常为 `<prefix>/bin/lody`。核对现有 watchdog、Worker 的启动参数；旧 npx 部署也用稳定入口重启整个 watchdog。
-3. 桌面端仍运行时，先正常退出并等待主进程结束，再停止 daemon。桌面端可能在 daemon 停止后自动接管 Host；此分支也适用于独立 daemon 升级。若退出超时，记录阻塞，保留服务，不强杀。
-4. 停止成功后启动 daemon；核对实际运行版本、活跃 Worker 与 `daemon-runner` 父进程、ready、online、authorized、后端及原有工作区全部 connected。`ready` 与 `online` 可能早于后端连接，需有界等待。
-5. 若先前桌面端在运行，重新打开，等待主进程出现后再次完成上述验证，并重新读取桌面端安装版本；缓存更新可能随正常退出自动安装。出现 Host 竞争时记录归属，按恢复流程处理。
+1. 查询 `npm view lody dist-tags --json` 解析目标稳定版本，再查询 `npm view lody@<目标版本> engines --json`。安装前核对实际 Node/npm 环境；运行时不满足要求时先处理依赖，保留旧服务。依赖升级应明确影响范围，避免连带升级无关工具。
+2. 用 `npm install -g lody@<目标版本>` 安装，通过 `npm prefix -g` 获取稳定 launcher。macOS 通常为 `<prefix>/bin/lody`。验证实际 Node 满足安装包的 `engines.node`，且 `lody --version` 达到目标。核对原 watchdog、Worker 参数；旧 npx 部署也用稳定入口重启整个 watchdog。
+3. 停机前用目标 CLI 的只读后端命令检查凭据可用性，例如先确认当前帮助支持 `workspace list --json`，再检查它能读取原工作区。它不是专用鉴权检查，也不能保证稍后的启动鉴权一定成功。旧 daemon 显示 connected 不能替代这一步；不要虚构 CLI 验权子命令。
+4. 桌面端仍运行时，先正常退出并等待主进程结束，再停止 daemon。桌面端可能在 daemon 停止后自动接管 Host。若退出超时，保留服务，不强杀。
+5. 停止成功后启动 daemon。只对明确可重试的临时 HTTP 错误做有界重试；每次重试前重新观察 Host。启动请求可能已接受，若目标服务正在运行则等待验证，不再次启动。401/403、Host 竞争或归属不明时停止重试；不自动重新登录、清凭据或加 `--skip-auth-check`。
+6. 按下方验收标准验证服务，再重新打开先前运行的桌面端。等待主进程出现后再次验证，重读桌面端安装版本；正常退出可能触发已缓存更新安装。恢复时分别报告独立 daemon 与桌面端状态，打开应用不等于独立服务恢复。
 
 macOS 默认启动参数的独立 daemon 可用 [scripts/restart_daemon.py](scripts/restart_daemon.py)，先安装目标 CLI，再执行：
 
@@ -70,13 +71,21 @@ macOS 默认启动参数的独立 daemon 可用 [scripts/restart_daemon.py](scri
 python3 <skill目录>/scripts/restart_daemon.py --launcher /opt/homebrew/bin/lody --version <目标版本> --machine-id <已核实机器ID> --task-dir <新的绝对任务目录> --detach
 ```
 
-脚本不会安装 npm 包或切换内置 Host。它会退出原来运行的桌面端、停止和启动 daemon、等待连接、重开桌面端并再次验证。提供 `--app`、`--data-dir` 可指定实际路径；`--check-only` 只验证、不重启。自定义启动参数需按同样顺序执行并保留参数，不能直接用默认脚本替换配置。
+脚本用于标准 npm launcher 和云端独立 daemon，不安装 npm 包，也不切换内置 Host。它在停机前检查 Node engine、旧服务归属与目标 CLI 的工作区读取，再退出桌面端、重启 daemon、验证连接并重开桌面端。临时 HTTP 408/429/5xx 最多尝试三次，重试间隔为 2、5 秒；每次启动前都检查归属。提供 `--app`、`--data-dir` 可指定实际路径，后者同步到 CLI 环境；`--check-only` 只验证、不重启。自定义 launcher 或启动参数需单独核实，不能用默认脚本替换配置。
 
-`--detach` 返回任务 PID 和目录；目录含 `task.pid`、`task.log`、原子写入的 `result.json`。等待以脚本自己的阶段时限为准，连接恢复后读取原任务结果。缺少结果时查看原 PID 和日志，不重新提交。`ok: true` 仅在最终验证通过后写入；失败会记录阶段并尝试重新打开原桌面端，恢复请求本身不证明服务健康。
+`--detach` 返回任务 PID 和目录；保留这个原句柄。目录含 `task.pid`、`task.log`、原子写入的 `progress.json` 与 `result.json`。会话恢复后主动读取原任务结果，不等用户追问；结果缺失时查看原 PID、阶段和日志，不重新提交同一操作。
+
+结果分别记录 `cliInstalled`、`restartCompleted`、`daemonVerified`，以及 `startAttempts`、失败阶段和恢复后的实际归属。`ok: true` 仅在最终验收完成后写入。若恢复快照显示旧版独立服务健康，或只重开了桌面端而归属变成 electron，应分别说明；后续用户手动恢复不能改写原任务失败的事实。脚本不会自动降级或把恢复请求当成恢复成功。
 
 脚本按当前英文 CLI 状态字段解析；格式变化或证据缺失会失败，不猜测成功。必要时按当前 CLI 帮助适配。修改脚本后运行 `python3 <skill目录>/scripts/test_restart_daemon.py`；测试隔离所有进程和服务操作。用户自有自启脚本仅在请求涉及自启时修改。
 
 当前若为内置服务，说明更新 npm CLI 不会更新内置服务。按用户意图更新桌面端或执行下方切换；升级请求本身不意味着改变运行方式。
+
+## 升级验收
+
+升级成功需要目标运行版本、预期 Host 归属、活跃 Worker 与 watchdog 对应关系，以及 `ready`、`online`、`authorized`、后端和原有工作区全部 connected。桌面端原先运行时，重开后再次检查这些状态。`ready` 和 `online` 可能早于后端连接，需有界等待。
+
+验收不发送聊天消息、不新建 Agent 会话，也不触发模型或 ACP 能力探测。聊天可用性不属于升级成功条件；日志中已有的 Mirror/ACP 故障另行诊断，不因此反复重启、增大启动并发或修改用户会话。
 
 ## 内置服务切换为独立 daemon
 
